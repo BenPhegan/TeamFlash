@@ -27,13 +27,16 @@ namespace TeamFlash.Hue
             _lights = lights.ToList();
         }
 
-        private void SetColour(string colour)
+        private void SetColour(int hue, int sat = 255)
         {
             var command = new LightCommand();
-            command.TurnOn().SetColor(colour);
-            command.Alert = Alert.Once;
+            command.TurnOn();
+            command.Saturation = sat;
+            command.Brightness = 255;
+            command.Hue = hue;
+            //command.Alert = Alert.Once;
             command.Effect = Effect.None;
-            _hueClient.SendCommandAsync(command, _lights);
+            _hueClient.SendCommandAsync(command, _lights).Wait();
         }
 
         protected override void ChangeColor(LightColour colour)
@@ -44,27 +47,27 @@ namespace TeamFlash.Hue
                 {
                     case LightColour.Red:
                         CurrentColour = LightColour.Red;
-                        SetColour("FF0D00");
+                        SetColour(65280);
                         break;
                     case LightColour.Green:
                         CurrentColour = LightColour.Green;
-                        SetColour("00FF00");
+                        SetColour(25500);
                         break;
                     case LightColour.Blue:
                         CurrentColour = LightColour.Blue;
-                        SetColour("0000FF");
+                        SetColour(46920);
                         break;
                     case LightColour.Yellow:
                         CurrentColour = LightColour.Yellow;
-                        SetColour("FFFF00");
+                        SetColour(12750);
                         break;
                     case LightColour.White:
                         CurrentColour = LightColour.White;
-                        SetColour("FFFFFF");
+                        SetColour(12750, 0);
                         break;
                     case LightColour.Purple:
                         CurrentColour = LightColour.Purple;
-                        SetColour("8400FF");
+                        SetColour(56100);
                         break;
                     case LightColour.Off:
                         CurrentColour = LightColour.Off;
